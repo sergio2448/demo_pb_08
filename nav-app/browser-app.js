@@ -6,6 +6,6 @@ navToggle.addEventListener('click', function () {
 })
 
 const clearFile = (type) => {
-  const file = type === 'single' ? document.getElementById('myFile') : document.getElementById('myFiles');
+  const file = type === 'single' ? document.getElementById('archivo') : document.getElementById('archivos');
   file.value = "";
 };
