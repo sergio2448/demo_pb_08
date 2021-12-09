@@ -28,7 +28,8 @@ app.get('/api/productos', (req, res) => {
 });
 
 app.get('/api/productos/:idProducto', (req, res) => {
-  const producto = productos.find(producto => producto.id === req.params.idProducto);
+  const { idProducto } = req.params;
+  const producto = productos.find(producto => producto.id === +idProducto);
   if (!producto) {
     return res.status(404).send(`El producto con id: ${req.params.idProducto} no existe`);
   }
