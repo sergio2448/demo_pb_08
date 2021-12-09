@@ -68,6 +68,20 @@
         </ul>
       </div>
     </nav>
+    <!-- Single File -->
+    <div class="single-file-form">
+      <form action='/uploadFile' enctype="multipart/form-data" method="POST">
+          <input type="file" id="myFile" name="myFile" class="input-file"><span onclick="clearFile('single')" class="clear-button">X</span>
+        <div><input type="submit" value="Upload File" class="upload-file-button"></div>
+      </form>
+    </div>
+    <!-- Multiple Files -->
+    <div class="multiple-files-form">
+      <form action='/uploadMultiple' enctype="multipart/form-data" method="POST">
+          <input type="file" id="myFiles" name="myFiles" multiple class="input-file"><span onclick="clearFile('multiple')" class="clear-button">X</span>
+          <div><input type="submit" value="Upload Files" class="upload-file-button"></div>
+      </form>
+    </div>
     <!-- javascript -->
     <script src="./browser-app.js"></script>
   </body>
