@@ -114,8 +114,9 @@ const usuarios = [
     email: 'lapulga@balondeoro.com',
     rol: 'god'
   },
-]
+];
+
 module.exports = {
   productos,
   usuarios,
-}
+};
