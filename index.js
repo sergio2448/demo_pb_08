@@ -1,5 +1,5 @@
 const express = require('express');
-const { productos, usuarios } = require('./data/data');
+const { products, users } = require('./data/data');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
@@ -8,175 +8,177 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Rutas
-app.get('/api/productos', (req, res) => {
-  const { precioMaximo, search } = req.query;
-  let respuestaProductos = [...productos];
+// Routes
+app.get('/api/products', (req, res) => {
+  const { maxPrice, search } = req.query;
+  let productsResponse = [...products];
   if (Object.keys(req.query).length > 0) {
-    if (precioMaximo) {
-      if (isNaN(+precioMaximo)) {
-        return res.status(400).send('precioMaximo debe ser un número válido');
+    if (maxPrice) {
+      if (isNaN(+maxPrice)) {
+        return res.status(400).json({success: false, error: 'maxPrice must be a valid number'});
       }
-      respuestaProductos = respuestaProductos.filter(producto => producto.precio <= +precioMaximo);
+      productsResponse = productsResponse.filter(product => product.price <= +maxPrice);
     }
     if (search) {
-      respuestaProductos = respuestaProductos.filter(producto => producto.nombre.toLowerCase().startsWith(search.toLowerCase()))
+      productsResponse = productsResponse.filter(product => product.name.toLowerCase().startsWith(search.toLowerCase()))
     }
-    return res.json(respuestaProductos);
+    return res.json({success: true, result: productsResponse });
   }
-    return res.json(respuestaProductos);
+    return res.json({success: true, result: productsResponse });
 });
 
-app.get('/api/productos/:idProducto', (req, res) => {
-  const { idProducto } = req.params;
-  const producto = productos.find(producto => producto.id === +idProducto);
-  if (!producto) {
-    return res.status(404).send(`El producto con id: ${req.params.idProducto} no existe`);
+app.get('/api/products/:productId', (req, res) => {
+  const { productId } = req.params;
+  const product = products.find(product => product.id === +productId);
+  if (!product) {
+    return res.status(404).json({ success: false, error: `Product with id: ${productId} does not exist!`});
   }
-  return res.json(producto);
+  return res.json({ success: true, result: product });
 });
 
-app.post('/api/productos', (req, res) => {
-  const { nombre, descripcion, precio, imagen } = req.body;
-  if ( !nombre || !descripcion || !precio || !imagen) {
-    return res.status(400).send('El cuerpo tiene un formato incorrecto')
+app.post('/api/products', (req, res) => {
+  const { name, description, price, image } = req.body;
+  if ( !name || !description || !price || !image) {
+    return res.status(400).json({ succes: false, error: 'Wrong body format' });
   }
-  const nuevoProducto = {
-    id: productos.length + 1,
-    nombre,
-    descripcion,
-    precio,
-    imagen
+  const newProduct = {
+    id: products.length + 1,
+    name,
+    description,
+    price,
+    image
   };
-  productos.push(nuevoProducto);
-  return res.json(nuevoProducto);
+  products.push(newProduct);
+  return res.json({ success: true, result: newProduct });
 });
 
-app.put('/api/productos/:idProducto', (req, res) => {
-  const { params: { idProducto }, body: { nombre, descripcion, precio, imagen} } = req;
-  const indiceProducto = productos.findIndex((producto) => producto.id === +idProducto);
-  if (indiceProducto < 0) return res.status(404).send(`El producto con id ${idProducto} no existe!`);
-  const nuevoProducto = {
-    ...productos[indiceProducto],
-    nombre,
-    descripcion,
-    precio,
-    imagen
+app.put('/api/products/:productId', (req, res) => {
+  const { params: { productId }, body: { name, description, price, image} } = req;
+  if ( !name || !description || !price || !image) {
+    return res.status(400).json({ success: false, error: 'Wrong body format' });
   };
-  productos[indiceProducto] = nuevoProducto;
-  return res.json(nuevoProducto);
+  const productIndex = products.findIndex((product) => product.id === +productId);
+  if (productIndex < 0) return res.status(404).json({ success: false, error: `Product with id: ${productId} does not exist!`});
+  const newProduct = {
+    ...products[productIndex],
+    name,
+    description,
+    price,
+    image
+  };
+  products[productIndex] = newProduct;
+  return res.json({ success: true, result: newProduct});
 });
 
-app.delete('/api/productos/:idProducto', (req, res) => {
-  const { idProducto } = req.params;
-  const indiceProducto = productos.findIndex(producto => producto.id === +idProducto);
-  if (indiceProducto < 0) return res.status(404).send(`Producto con id ${idProducto} no existe!`);
-  // productos = productos.filter(producto => producto.id !== +idProducto); mostrar error 500!!!
-  productos.splice(indiceProducto, 1);
-  return res.send('producto eliminado correctamente!');
+app.delete('/api/products/:productId', (req, res) => {
+  const { productId } = req.params;
+  const productIndex = products.findIndex(product => product.id === +productId);
+  if (productIndex < 0) return res.status(404).json({ success: false, error: `Product with id ${productId} does not exist!`});
+  products.splice(productIndex, 1);
+  return res.json({ success: true, result: 'product correctly eliminated' });
 });
 
-app.get('/api/usuarios', (req,res) => {
-  const { rol, search } = req.query;
-  let respuestaUsuarios = [...usuarios];
+app.get('/api/users', (req,res) => {
+  const { role, search } = req.query;
+  let userResponse = [...users];
   if (Object.keys(req.query).length > 0) {
-    if (rol) {
-      respuestaUsuarios = respuestaUsuarios.filter(usuario => usuario.rol === rol.toLowerCase());
+    if (role) {
+      userResponse = userResponse.filter(user => user.role === role.toLowerCase());
     }
     if (search) {
-      respuestaUsuarios = respuestaUsuarios.filter(usuario => 
-        usuario.nombre.toLowerCase().includes(search.toLowerCase()) ||
-        usuario.apellido.toLowerCase().includes(search.toLowerCase())
+      userResponse = userResponse.filter(user => 
+        user.name.toLowerCase().includes(search.toLowerCase()) ||
+        user.lastname.toLowerCase().includes(search.toLowerCase())
       );
     }
-    return res.json(respuestaUsuarios);
+    return res.json({ success: true, result: userResponse });
   }
-    return res.json(respuestaUsuarios);
+    return res.json({ success: true, result: userResponse });
 });
 
-app.get('/api/usuarios/:idUsuario', (req, res) => {
-  const { idUsuario } = req.params;
-  if (isNaN(+idUsuario) || +idUsuario < 0 || +idUsuario % 1 !== 0) {
-    return res.status(400).json({error: 'El parámetro debe ser un número entero mayor a cero'});
+app.get('/api/users/:userId', (req, res) => {
+  const { userId } = req.params;
+  if (isNaN(+userId) || +userId < 0 || +userId % 1 !== 0) {
+    return res.status(400).json({ success: false, error: 'userId must be a positive integer valid number' });
   }
-  const usuario = usuarios.find(usuario => usuario.id === +idUsuario);
-  if (!usuario) {
-    return res.status(404).json({ error: `El usuario con id ${idUsuario} no se encuentra en nuestros registros`}); 
+  const user = users.find(user => user.id === +userId);
+  if (!user) {
+    return res.status(404).json({ success: false, error: `User with id ${userId} is not in our records!` }); 
   }
-  return res.json(usuario);
+  return res.json({ success: true, result: user });
 });
 
-app.post('/api/usuarios', (req,res) => {
-  const { nombre, apellido, edad, email, rol } = req.body || {};
-  if (!nombre || !apellido || !edad || !email || !rol) {
-    let camposRequeridos = [];
-    if (!nombre) camposRequeridos.push('nombre');
-    if (!apellido) camposRequeridos.push('apellido');
-    if (!edad) camposRequeridos.push('edad');
-    if (!email) camposRequeridos.push('email');
-    if (!rol) camposRequeridos.push('rol');
-    return res.status(400).json({ error: `Los siguientes campos son requeridos: ${camposRequeridos.join(', ')}`})
+app.post('/api/users', (req,res) => {
+  const { name, lastname, age, email, role } = req.body || {};
+  if (!name || !lastname || !age || !email || !role) {
+    let requiredFields = [];
+    if (!name) requiredFields.push('name');
+    if (!lastname) requiredFields.push('lastname');
+    if (!age) requiredFields.push('age');
+    if (!email) requiredFields.push('email');
+    if (!role) requiredFields.push('role');
+    return res.status(400).json({ success: false, error: `Following fields are required: ${requiredFields.join(', ')}`})
   }
-  const nuevoUsuario = {
-    id: usuarios[usuarios.length - 1].id + 1,
-    nombre,
-    apellido,
-    edad,
+  const newUser = {
+    id: users[users.length - 1].id + 1,
+    name,
+    lastname,
+    age,
     email,
-    rol
+    role
   };
-  usuarios.push(nuevoUsuario);
-  return res.json({ exito: true, resultado: nuevoUsuario});
+  users.push(newUser);
+  return res.json({ success: true, result: newUser});
 });
 
-app.put('/api/usuarios/:idUsuario', (req, res) => {
-  const { params: { idUsuario }, body: { nombre, apellido, edad, email, rol } } = req;
-  if (isNaN(+idUsuario) || +idUsuario < 0 || +idUsuario % 1 !== 0) {
-    return res.status(400).json({error: 'El parámetro debe ser un número entero mayor a cero'});
+app.put('/api/users/:userId', (req, res) => {
+  const { params: { userId }, body: { name, lastname, age, email, role } } = req;
+  if (isNaN(+userId) || +userId < 0 || +userId % 1 !== 0) {
+    return res.status(400).json({ success: false, error: 'userId must be a positive integer valid number' });
   }
-  const indiceUsuario = usuarios.findIndex( usuario => usuario.id === +idUsuario);
-  if (indiceUsuario < 0) {
-    return res.status(404).send(`El usuario con id ${idProducto} no está en nuestros registros!`);
+  const userIndex = users.findIndex( user => user.id === +userId);
+  if (userIndex < 0) {
+    return res.status(404).json({ success: false, error: `User with id ${userId} is not in our records!` });
   } 
-  if (!nombre || !apellido || !edad || !email || !rol) {
-    let camposRequeridos = [];
-    if (!nombre) camposRequeridos.push('nombre');
-    if (!apellido) camposRequeridos.push('apellido');
-    if (!edad) camposRequeridos.push('edad');
-    if (!email) camposRequeridos.push('email');
-    if (!rol) camposRequeridos.push('rol');
-    return res.status(400).json({ error: `Los siguientes campos son requeridos: ${camposRequeridos.join(', ')}`})
+  if (!name || !lastname || !age || !email || !role) {
+    let requiredFields = [];
+    if (!name) requiredFields.push('name');
+    if (!lastname) requiredFields.push('lastname');
+    if (!age) requiredFields.push('age');
+    if (!email) requiredFields.push('email');
+    if (!role) requiredFields.push('role');
+    return res.status(400).json({ success: false, error: `Following fields are required: ${requiredFields.join(', ')}`})
   }
-  const usuarioModificado = {
-    ...usuarios[indiceUsuario],
-    nombre,
-    apellido,
-    edad,
+  const modifiedUser = {
+    ...users[userIndex],
+    name,
+    lastname,
+    age,
     email,
-    rol
+    role
   };
-  usuarios[indiceUsuario] = usuarioModificado;
-  return res.json({ exito: true, resultado: usuarioModificado });
+  users[userIndex] = modifiedUser;
+  return res.json({ success: true, result: modifiedUser });
 });
 
-app.delete('/api/usuarios/:idUsuario', (req, res) => {
-  const { idUsuario } = req.params;
-  if (isNaN(+idUsuario) || +idUsuario < 0 || +idUsuario % 1 !== 0) {
-    return res.status(400).json({error: 'El parámetro debe ser un número entero mayor a cero'});
+app.delete('/api/users/:userId', (req, res) => {
+  const { userId } = req.params;
+  if (isNaN(+userId) || +userId < 0 || +userId % 1 !== 0) {
+    return res.status(400).json({ success: false, error: 'userId must be a positive integer valid number' });
   }
-  const indiceUsuario = usuarios.findIndex( usuario => usuario.id === +idUsuario);
-  if (indiceUsuario < 0) {
-    return res.status(404).send(`El usuario con id ${idProducto} no está en nuestros registros!`);
+  const userIndex = users.findIndex( user => user.id === +userId);
+  if (userIndex < 0) {
+    return res.status(404).json({ success: false, error: `User with id ${userId} is not in our records!` });
   } 
-  const usuarioEliminado = usuarios[indiceUsuario];
-  usuarios.splice(indiceUsuario, 1);
-  return res.json({ exito: true, resultado: usuarioEliminado });
+  const eliminatedUser = users[userIndex];
+  users.splice(userIndex, 1);
+  return res.json({ success: true, result: eliminatedUser });
 });
 
 const connectedServer = app.listen(PORT, ()=> {
-  console.log(`Servidor activo y escuchando en el puerto ${PORT}`);
+  console.log(`Server is up and running on port ${PORT}`);
 });
 
 connectedServer.on('error', (error) => {
-  console.log(error.message);
+  console.error('Error: ', error);
 })
