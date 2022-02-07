@@ -141,6 +141,6 @@ const users = [
 ];
 
 module.exports = {
-  productos,
-  usuarios,
+  products,
+  users,
 };
