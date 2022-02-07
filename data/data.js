@@ -1,4 +1,4 @@
-const productos = [
+const products = [
   {
     id: 1,
     nombre: 'Escuadra',
@@ -57,7 +57,7 @@ const productos = [
   },
 ];
 
-const usuarios = [
+const users = [
   {
     id: 1,
     nombre: 'Jorge',
