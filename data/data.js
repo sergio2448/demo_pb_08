@@ -63,8 +63,8 @@ const usuarios = [
     nombre: 'Jorge',
     apellido: 'Malo',
     edad: 29,
-    email: 'jorge@malo.com',
-    rol: 'profesor'
+    email: 'jorge@housemalo.com',
+    rol: 'support'
   },
   {
     id: 2,
@@ -72,7 +72,7 @@ const usuarios = [
     apellido: 'Targaryen',
     edad: 16,
     email: 'dan@housetargaryen.com',
-    rol: 'Mother of Dragons'
+    rol: 'lead'
   },
   {
     id: 3,
@@ -80,7 +80,7 @@ const usuarios = [
     apellido: 'Snow',
     edad: 24,
     email: 'jon@housestark.com',
-    rol: 'White Wolf'
+    rol: 'lead'
   },
   {
     id: 4,
@@ -88,7 +88,7 @@ const usuarios = [
     apellido: 'Stark',
     edad: 18,
     email: 'arya@housestark.com',
-    rol: 'Princess'
+    rol: 'assassin'
   },
   {
     id: 5,
@@ -96,7 +96,7 @@ const usuarios = [
     apellido: 'Stark',
     edad: 20,
     email: 'robb@housestark.com',
-    rol: 'estudiante'
+    rol: 'lead'
   },
   {
     id: 6,
@@ -104,10 +104,34 @@ const usuarios = [
     apellido: 'Lannister',
     edad: 39,
     email: 'tyirion@houselannister.com',
-    rol: 'Warden of the West'
+    rol: 'support'
   },
   {
     id: 7,
+    nombre: 'Brandon',
+    apellido: 'Stark',
+    edad: 34,
+    email: 'bran@housestark.com',
+    rol: 'psychic'
+  },
+  {
+    id: 8,
+    nombre: 'Hodor',
+    apellido: 'Hodor',
+    edad: 38,
+    email: 'Hodor',
+    rol: 'support'
+  },
+  {
+    id: 9,
+    nombre: 'Bronn',
+    apellido: '',
+    edad: null,
+    email: 'bronn@blackwater',
+    rol: 'assassin'
+  },
+  {
+    id: 10,
     nombre: 'Lionel',
     apellido: 'Messi',
     edad: 34,
