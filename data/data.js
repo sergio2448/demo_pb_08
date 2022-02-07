@@ -68,43 +68,51 @@ const usuarios = [
   },
   {
     id: 2,
-    nombre: 'Rodolfo',
-    apellido: 'Gonzalez',
-    edad: 25,
-    email: 'rodolfo@gonzalez.com',
-    rol: 'tutor'
+    nombre: 'Daenerys',
+    apellido: 'Targaryen',
+    edad: 16,
+    email: 'dan@housetargaryen.com',
+    rol: 'Mother of Dragons'
   },
   {
     id: 3,
-    nombre: 'Fabio',
-    apellido: 'Arias',
-    edad: 22,
-    email: 'fabio@arias.com',
-    rol: 'tutor'
+    nombre: 'Jon',
+    apellido: 'Snow',
+    edad: 24,
+    email: 'jon@housestark.com',
+    rol: 'White Wolf'
   },
   {
     id: 4,
-    nombre: 'Matías',
-    apellido: 'Oquendo',
-    edad: 27,
-    email: 'matias@oquendo.com',
-    rol: 'estudiante'
+    nombre: 'Arya',
+    apellido: 'Stark',
+    edad: 18,
+    email: 'arya@housestark.com',
+    rol: 'Princess'
   },
   {
     id: 5,
-    nombre: 'Fernanda',
-    apellido: 'Quispe',
-    edad: 24,
-    email: 'fernanda@quispe.com',
+    nombre: 'Robb',
+    apellido: 'Stark',
+    edad: 20,
+    email: 'robb@housestark.com',
     rol: 'estudiante'
   },
   {
     id: 6,
+    nombre: 'Tyrion',
+    apellido: 'Lannister',
+    edad: 39,
+    email: 'tyirion@houselannister.com',
+    rol: 'Warden of the West'
+  },
+  {
+    id: 7,
     nombre: 'Lionel',
     apellido: 'Messi',
     edad: 34,
     email: 'lapulga@balondeoro.com',
-    rol: 'dios'
+    rol: 'god'
   },
 ]
 module.exports = {
