@@ -239,7 +239,7 @@ nav {
   background-color: beige;
 }
 
-.upload-file-button {
+.submit-button {
   border: 1px solid #ccc;
   border-radius: 5px;
   display: inline-block;
@@ -249,7 +249,7 @@ nav {
   transition: all 0.5s;
 }
 
-.upload-file-button:hover {
+.submit-button:hover {
   background-color: #1de9b6;
 }
 
